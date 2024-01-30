@@ -10,10 +10,11 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false # Set to false to prevent one job failure from cancelling other job.
       matrix:
         os: [windows-2019]
-        python-version: [3.9, 3.10, 3.11, 3.12] # Add the Python versions you want to build against
-        arch: [x86_64, x86]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"] # Update to the Python versions you want to use
+        arch: [x86_64]
 
     steps:
     - uses: actions/checkout@v2
@@ -21,17 +22,17 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }} # Use the Python version from the matrix
+        python-version: ${{ matrix.python-version }}
 
     - name: Install build dependencies
       run: python -m pip install --upgrade pip setuptools wheel Cython mido numpy scipy
 
-    - name: Build wheel
+    - name: Build wheel for madmom
       run: |
         mkdir dist
         pip wheel madmom -w dist
 
-    - name: Print files
+    - name: Print files in dist
       run: |
         ls dist
 
