@@ -25,12 +25,11 @@ jobs:
         architecture: ${{ matrix.arch }}
 
     - name: Install build dependencies
-      run: python -m pip install --upgrade pip setuptools wheel Cython
+      run: python -m pip install --upgrade pip setuptools wheel Cython mido numpy scipy
 
     - name: Build wheel
       run: |
         mkdir dist && cd dist
-        pip install madmom
         pip wheel madmom madmom
   
     - name: Print files
