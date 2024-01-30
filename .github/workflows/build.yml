@@ -30,7 +30,7 @@ jobs:
     - name: Build wheel for madmom
       run: |
         mkdir dist
-        pip wheel madmom -w dist
+        pip wheel git+https://github.com/CPJKU/madmom.git -w dist
 
     - name: Print files in dist
       run: |
