@@ -11,10 +11,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        include:
-          - os: windows-2019
-            arch: x86_64
-            
+        os: [windows-2019]
+        python-version: [3.9, 3.10, 3.11, 3.12] # Add the Python versions you want to build against
+        arch: [x86_64, x86]
 
     steps:
     - uses: actions/checkout@v2
@@ -22,23 +21,22 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9 # Specify the Python version. You can change it as needed.
+        python-version: ${{ matrix.python-version }} # Use the Python version from the matrix
 
     - name: Install build dependencies
       run: python -m pip install --upgrade pip setuptools wheel Cython mido numpy scipy
 
     - name: Build wheel
       run: |
-        mkdir dist && cd dist
-        pip wheel madmom madmom
-  
+        mkdir dist
+        pip wheel madmom -w dist
+
     - name: Print files
       run: |
-        cd dist
-        ls
+        ls dist
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: wheel-${{ matrix.os }}-${{ matrix.arch }}
+        name: wheel-${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.arch }}
         path: ./dist/*.whl
