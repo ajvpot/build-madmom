@@ -30,6 +30,7 @@ jobs:
     - name: Build wheel
       run: |
         mkdir dist && cd dist
+        pip install madmom
         pip wheel madmom madmom
   
     - name: Print files
