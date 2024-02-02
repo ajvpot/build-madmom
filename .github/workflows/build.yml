@@ -31,6 +31,7 @@ jobs:
       run: |
         mkdir dist
         pip wheel git+https://github.com/CPJKU/madmom.git -w dist
+        pip wheel rtmidi -w dist
 
     - name: Print files in dist
       run: |
